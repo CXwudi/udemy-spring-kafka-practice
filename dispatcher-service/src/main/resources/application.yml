@@ -1,0 +1,20 @@
+#kafka:
+#  bootstrap-servers: localhost:9092
+spring:
+  kafka:
+    bootstrap-servers: localhost:9092
+    consumer:
+      key-deserializer: org.apache.kafka.common.serialization.StringDeserializer
+      value-deserializer: org.springframework.kafka.support.serializer.ErrorHandlingDeserializer
+      properties:
+        spring.deserializer.value.delegate.class: org.springframework.kafka.support.serializer.JsonDeserializer
+        # this also configures the trusted packages for the deserializer
+#        spring.json.value.default.type: poc.cx.dispatchapp.message.OrderCreated
+        spring.json.trusted.packages: poc.cx.shared.message, poc.cx.dispatchapp.message
+      group-id: dispatch.order.created.consumer
+    producer:
+      key-serializer: org.apache.kafka.common.serialization.StringSerializer
+      value-serializer: org.springframework.kafka.support.serializer.JsonSerializer
+  threads:
+    virtual:
+      enabled: true
